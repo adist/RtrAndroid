@@ -36,3 +36,9 @@ proguard/
 
 # iml files 
 app/app.iml
+
+# git files
+.git/
+
+# backup files 
+*.orig

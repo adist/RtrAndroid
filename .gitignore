@@ -61,6 +61,11 @@ proguard/
 # Android Studio Navigation editor temp files
 .navigation/
 
-# .iml Files
-*.iml
+# iml files 
+app/app.iml
 
+# backup files 
+*.orig
+
+# git files
+.hg/
