@@ -112,7 +112,8 @@
                         android:hint="@string/label_username_or_email"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColorHint="@color/body_text_3" />
+                        android:textColorHint="@color/body_text_3"
+                        android:inputType="phone" />
 
                 </LinearLayout>
 
@@ -135,20 +136,6 @@
                         android:fontFamily="@string/font_light"
                         android:gravity="center_vertical"
                         android:hint="@string/label_first_name"
-                        android:singleLine="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColorHint="@color/body_text_3" />
-
-                    <EditText
-                        android:id="@+id/editText3"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="#ffffff"
-                        android:fontFamily="@string/font_light"
-                        android:gravity="center_vertical"
-                        android:hint="@string/label_last_name"
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/body_text_3" />
@@ -177,7 +164,40 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:id="@+id/layoutValidateCode"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_action_lock"
+                        android:tint="@color/body_text_3" />
+
+                    <EditText
+                        android:id="@+id/edtValidation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="#ffffff"
+                        android:fontFamily="@string/font_light"
+                        android:gravity="center_vertical"
+                        android:hint="@string/label_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColorHint="@color/body_text_3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:id="@+id/layoutPassword">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -200,39 +220,6 @@
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/body_text_3" />
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/layoutBorderDB"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/theme_primary_dark"
-                    android:visibility="gone" />
-
-
-                <LinearLayout
-                    android:id="@+id/layoutDatabase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="5dp"
-                        android:src="@drawable/ic_action_database"
-                        android:tint="@color/body_text_3" />
-
-                    <Spinner
-                        android:id="@+id/spinnerDatabaseList"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#ffffff"
-                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -282,6 +269,39 @@
                         android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/body_text_3" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/layoutBorderDB"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/theme_primary_dark"
+                    android:visibility="gone" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutDatabase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/ic_action_database"
+                        android:tint="@color/body_text_3" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDatabaseList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
             </LinearLayout>

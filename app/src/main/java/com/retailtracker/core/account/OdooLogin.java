@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -135,6 +136,7 @@ public class OdooLogin extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.create_account:
                 IntentUtils.openURLInBrowser(this, OConstants.URL_ODOO_SIGN_UP);
+//                IntentUtils.openURLInBrowser(this, OConstants.URL_ODOO_SIGN_UP);
                 break;
         }
     }
@@ -144,12 +146,16 @@ public class OdooLogin extends AppCompatActivity implements View.OnClickListener
         if (!mCreateAccount) {
             mCreateAccount = true;
             findViewById(R.id.layoutName).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutRetypePassword).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutValidateCode).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutPassword).setVisibility(View.GONE);
+            ((Button)findViewById(R.id.btnLogin)).setText(R.string.label_accept_create);
             txvCreateAccount.setText("Back to Login");
         } else {
             mCreateAccount = false;
             findViewById(R.id.layoutName).setVisibility(View.GONE);
-            findViewById(R.id.layoutRetypePassword).setVisibility(View.GONE);
+            findViewById(R.id.layoutValidateCode).setVisibility(View.GONE);
+            findViewById(R.id.layoutPassword).setVisibility(View.VISIBLE);
+            ((Button)findViewById(R.id.btnLogin)).setText(R.string.label_accept_login);
             txvCreateAccount.setText("Create Account");
         }
     }
