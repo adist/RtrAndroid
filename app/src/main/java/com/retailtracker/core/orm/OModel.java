@@ -41,6 +41,7 @@ import com.retailtracker.core.orm.provider.BaseModelProvider;
 import com.retailtracker.core.service.ISyncServiceListener;
 import com.retailtracker.core.service.OSyncAdapter;
 import com.retailtracker.core.support.OUser;
+import com.retailtracker.core.support.sync.SyncUtils;
 import com.retailtracker.core.utils.OCursorUtils;
 import com.retailtracker.core.utils.ODateUtils;
 import com.retailtracker.core.utils.OListUtils;
@@ -147,6 +148,10 @@ public class OModel implements ISyncServiceListener {
 
     public String getDatabaseName() {
         return sqLite.getDatabaseName();
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     public void close() {
@@ -1118,5 +1123,9 @@ public class OModel implements ISyncServiceListener {
     @Override
     public void onSyncFinished() {
         // Will be over ride by extending model
+    }
+
+    public SyncUtils sync() {
+        return SyncUtils.get(mContext);
     }
 }

@@ -34,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.odoo.widgets.parallax.ParallaxScrollView;
 import com.retailtracker.App;
 import com.retailtracker.R;
 import com.retailtracker.addons.customers.utils.ShareUtil;
@@ -46,9 +47,10 @@ import com.retailtracker.core.orm.fields.OColumn;
 import com.retailtracker.core.support.OdooCompatActivity;
 import com.retailtracker.core.utils.BitmapUtils;
 import com.retailtracker.core.utils.IntentUtils;
+import com.retailtracker.core.utils.OAlert;
 import com.retailtracker.core.utils.OAppBarUtils;
+import com.retailtracker.core.utils.OResource;
 import com.retailtracker.core.utils.OStringColorUtil;
-import com.odoo.widgets.parallax.ParallaxScrollView;
 
 import odoo.controls.OField;
 import odoo.controls.OForm;
@@ -58,6 +60,7 @@ import odoo.helper.utils.gson.OdooResult;
 public class CustomerDetails extends OdooCompatActivity
         implements View.OnClickListener, OField.IOnFieldValueChangeListener {
     public static final String TAG = CustomerDetails.class.getSimpleName();
+    public static String KEY_PARTNER_TYPE = "partner_type";
     private final String KEY_MODE = "key_edit_mode";
     private final String KEY_NEW_IMAGE = "key_new_image";
     private ActionBar actionBar;
@@ -73,6 +76,7 @@ public class CustomerDetails extends OdooCompatActivity
     private Menu mMenu;
     private OFileManager fileManager;
     private String newImage = null;
+    private Customers.Type partnerType = Customers.Type.Customer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,9 +98,15 @@ public class CustomerDetails extends OdooCompatActivity
         mTitleView = (TextView) findViewById(android.R.id.title);
         resPartner = new ResPartner(this, null);
         extras = getIntent().getExtras();
-        if (extras == null)
+        if (extras != null)
+            partnerType = Customers.Type.valueOf(extras.getString(KEY_PARTNER_TYPE));
+        if (!hasRecordInExtra())
             mEditMode = true;
         setupActionBar();
+    }
+
+    private boolean hasRecordInExtra() {
+        return extras != null && extras.containsKey(OColumn.ROW_ID);
     }
 
     private void setMode(Boolean edit) {
@@ -111,9 +121,9 @@ public class CustomerDetails extends OdooCompatActivity
             color = OStringColorUtil.getStringColor(this, record.getString("name"));
         }
         if (edit) {
-            if (extras != null)
+            if (hasRecordInExtra()) {
                 actionBar.setTitle(R.string.label_edit);
-            else
+            } else
                 actionBar.setTitle(R.string.label_new);
             actionBar.setBackgroundDrawable(new ColorDrawable(color));
             mForm = (OForm) findViewById(R.id.customerFormEdit);
@@ -135,7 +145,7 @@ public class CustomerDetails extends OdooCompatActivity
     }
 
     private void setupActionBar() {
-        if (extras == null) {
+        if (!hasRecordInExtra()) {
             setMode(mEditMode);
             userImage.setColorFilter(Color.parseColor("#ffffff"));
             mForm.setEditable(mEditMode);
@@ -230,6 +240,15 @@ public class CustomerDetails extends OdooCompatActivity
             case R.id.menu_customer_save:
                 OValues values = mForm.getValues();
                 if (values != null) {
+                    switch (partnerType) {
+                        case Supplier:
+                            values.put("customer", "false");
+                            values.put("supplier", "true");
+                            break;
+                        default:
+                            values.put("customer", "true");
+                            break;
+                    }
                     if (newImage != null) {
                         values.put("image_small", newImage);
                         values.put("large_image", newImage);
@@ -240,7 +259,6 @@ public class CustomerDetails extends OdooCompatActivity
                         mEditMode = !mEditMode;
                         setupActionBar();
                     } else {
-                        values.put("customer", "true");
                         final int row_id = resPartner.insert(values);
                         if (row_id != OModel.INVALID_ROW_ID) {
                             finish();
@@ -265,6 +283,23 @@ public class CustomerDetails extends OdooCompatActivity
                 break;
             case R.id.menu_customer_import:
                 ShareUtil.shareContact(this, record, false);
+                break;
+            case R.id.menu_customer_delete:
+                OAlert.showConfirm(this, OResource.string(this,
+                        R.string.confirm_are_you_sure_want_to_delete),
+                        new OAlert.OnAlertConfirmListener() {
+                            @Override
+                            public void onConfirmChoiceSelect(OAlert.ConfirmType type) {
+                                if (type == OAlert.ConfirmType.POSITIVE) {
+                                    // Deleting record and finishing activity if success.
+                                    if (resPartner.delete(record.getInt(OColumn.ROW_ID))) {
+                                        Toast.makeText(CustomerDetails.this, R.string.toast_record_deleted,
+                                                Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }
+                            }
+                        });
                 break;
         }
         return super.onOptionsItemSelected(item);

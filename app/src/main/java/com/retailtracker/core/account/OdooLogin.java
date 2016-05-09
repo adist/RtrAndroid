@@ -51,8 +51,8 @@ public class OdooLogin extends AppCompatActivity implements View.OnClickListener
 
     private EditText edtUsername, edtPassword, edtSelfHosted;
     private Boolean mCreateAccountRequest = false;
-    private Boolean mSelfHostedURL = true;
     private Boolean mCreateAccount = false;
+    private Boolean mSelfHostedURL = false;
     private Boolean mConnectedToServer = false;
     private Boolean mAutoLogin = false;
     private Boolean mRequestedForAccount = false;
@@ -99,7 +99,6 @@ public class OdooLogin extends AppCompatActivity implements View.OnClickListener
         findViewById(R.id.create_account).setOnClickListener(this);
         findViewById(R.id.txvAddSelfHosted).setOnClickListener(this);
         edtSelfHosted = (EditText) findViewById(R.id.edtSelfHostedURL);
-        edtSelfHosted.setText(OConstants.URL_ODOO);
     }
 
     private void startOdooActivity() {
@@ -125,18 +124,13 @@ public class OdooLogin extends AppCompatActivity implements View.OnClickListener
                 toggleSelfHostedURL();
                 break;
             case R.id.btnLogin:
-                if (!mCreateAccount) {
-                    createUser();
-                } else {
-                    loginUser();
-                }
+                loginUser();
                 break;
             case R.id.forgot_password:
                 IntentUtils.openURLInBrowser(this, OConstants.URL_ODOO_RESET_PASSWORD);
                 break;
             case R.id.create_account:
                 IntentUtils.openURLInBrowser(this, OConstants.URL_ODOO_SIGN_UP);
-//                IntentUtils.openURLInBrowser(this, OConstants.URL_ODOO_SIGN_UP);
                 break;
         }
     }
